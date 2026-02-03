@@ -1,0 +1,41 @@
+# Unicore UM982 Driver Configuration Parameters
+# 
+# This file contains the default configuration parameters for the Unicore UM982 GPS driver.
+# These parameters can be overridden at runtime using ROS 2 parameter mechanisms.
+
+unicore_um982_driver:
+  ros__parameters:
+    # Serial port configuration
+    port: "/dev/ttyGPS"        # USB serial port device for UM982 receiver
+    baudrate: 115200            # Communication baud rate (matches UM982 COM3 config)
+    
+    # Receiver configuration commands
+    # These commands are sent to the UM982 receiver during initialization
+    config_commands:
+      - "CONFIG COM3 115200"           # Set COM3 to 230400 baud
+      - "MODE ROVER SURVEY"            # Set receiver mode
+      - "unmask GPS"                   # Enable GPS constellation
+      - "unmask bds"                   # Enable BeiDou constellation  
+      - "unmask GLO"                   # Enable GLONASS constellation
+      - "unmask GAL"                   # Enable Galileo constellation
+      - "unmask QZSS"                  # Enable QZSS constellation
+      - "UNLOG"                        # Clear all existing logs
+      - "CONFIG SMOOTH RTKHEIGHT 2"    # Configure RTK height smoothing
+      - "CONFIG SMOOTH HEADING 2"      # Configure heading smoothing
+      - "CONFIG SMOOTH PSRVEL ENABLE"  # Enable pseudorange velocity smoothing
+      - "CONFIG RTK TIMEOUT 300"       # Set RTK timeout to 300 seconds
+      - "CONFIG RTK RELIABILITY 4 2"   # Set RTK reliability parameters
+      - "CONFIG HEADING FIXLENGTH"     # Enable fixed-length heading
+      - "CONFIG HEADING LENGTH 43 1"   # Set heading baseline length (43cm with 1cm tolerance)
+      - "CONFIG HEADING RELIABILITY 3" # Set heading reliability level
+      - "PVTSLNA COM3 1"            # Enable PVTSLN output at 20Hz (0.05s interval)
+      - "SAVECONFIG"                   # Save all configuration to non-volatile memory
+    
+    # NTRIP Client Configuration
+    # These parameters configure the external str2str NTRIP client
+    # str2str is part of RTKLIB and must be installed separately
+    ntrip_server: "rtk2go.com"           # NTRIP caster server hostname/IP
+    ntrip_port: 2101                  # NTRIP caster port (typically 2101)
+    ntrip_mountpoint: "FIXED"            # NTRIP mountpoint name
+    ntrip_user: "user"                   # NTRIP username (if required)
+    ntrip_pass: "password"               # NTRIP password (if required)
