@@ -1,7 +1,7 @@
 ```markdown
 # Unicore UM982 ROS 2 Driver
 
-这是一个适用于 **和芯星通 (Unicore) UM982** 双天线 RTK GPS 接收机的 ROS 2 驱动程序。
+这是一个适用于 **和芯星通 (Unicore) UM982** 双天线 RTK GPS 接收机的 ROS 2 驱动程序工作空间。
 
 该驱动程序通过解析 Unicore 专有的 `PVTSLN` 消息格式，向 ROS 2 生态系统提供高频、高精度的位置和航向数据，并支持通过 RTKLIB (str2str) 进行 NTRIP 网络 RTK 差分校正。
 
@@ -53,15 +53,18 @@ sudo cp str2str /usr/local/bin/
 假设您的工作空间为 `~/ros2_ws`：
 
 ```bash
+# 1. 创建并进入 src 目录
 mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
-git clone [https://github.com/your_username/um982_driver_ws.git](https://github.com/your_username/um982_driver_ws.git) um982-driver
 
-# 安装 ROS 依赖
+# 2. 克隆本仓库
+git clone [https://github.com/tang875/um982_driver_ws.git](https://github.com/tang875/um982_driver_ws.git)
+
+# 3. 安装依赖
 cd ~/ros2_ws
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
-# 编译
+# 4. 编译
 colcon build --symlink-install --packages-select unicore_um982_driver
 source install/setup.bash
 
@@ -74,9 +77,10 @@ source install/setup.bash
 **强烈建议配置此项！** 防止设备插拔或重启后 `/dev/ttyUSB*` 编号发生变化。
 
 1. **复制规则文件**：
-仓库中已包含配置文件，将其复制到系统目录：
+仓库中已包含配置文件，将其复制到系统目录（路径可能根据克隆后的文件夹名略有不同，请自行确认）：
 ```bash
-sudo cp src/um982-driver/src/tools/99-serial.rules /etc/udev/rules.d/
+# 假设克隆下来的文件夹名为 um982_driver_ws
+sudo cp src/um982_driver_ws/src/tools/99-serial.rules /etc/udev/rules.d/
 
 ```
 
